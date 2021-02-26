@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const Card = ({ cardNumber, cardImg }) => {
+export const Card = ({ cardNumber, cardImg, cardsHadler }) => {
   
   
   const [flipped, setFlipped] = useState(false);
@@ -11,8 +11,14 @@ export const Card = ({ cardNumber, cardImg }) => {
 
   
   */
+  
+  /* Вот у меня есть поле. По клику карточка переворачивается, вызывается  */
   return (
-    <div className={`card-container ${cardNumber}`} onClick={() => {setFlipped(!flipped)}}>
+    <div className={`card-container ${cardNumber}`} onClick={(event) => {
+      
+      setFlipped(!flipped);
+      cardsHadler(event);
+    }}>
       <div className={`front ${flipped ? 'active' : ''}`}>
         <img src={`${cardImg}`} alt="cardNumber"/>
       </div>

@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Card } from './Card';
 import { utils } from '../utils';
+import { useGameConfig } from '../hooks/useGameConfig';
 
 export const Field = () => {
   
@@ -59,14 +60,15 @@ export const Field = () => {
     'king_diamonds',
 
   ]
-  
-  const cardsConfig = cardsName.map(item => {
-    return {
-      cardNumber: item,
-      cardImg: require(`../assets/deck/${item}.png`).default
-    }
-  });
 
+  const { gameField, startGameHandler } = useGameConfig();
+  
+  useEffect(() => startGameHandler(0, 51, 9), [startGameHandler])
+
+  const [openCardsArray, setOpenCardsArray] = useState([]);
+  
+
+/*
   const gameNumbers = Array.from(utils.generateSet(0, 51, 9));
 
 
@@ -82,20 +84,44 @@ export const Field = () => {
   }
 
   let gameSelection = shuffleArray(gameNumbers.concat(gameNumbers));
+ /* 
+ Проблема заключается в том, что при каждом клике меняется состояние поля и вся ахинея генерится заново. То есть, мне нужен свой собственный хук. 
  
-  let gameData = gameSelection.map((item) => cardsConfig[item])
+  let gameData = gameSelection.map((item) => cardsConfig[item]);
+
+  */
+
+
+  const openCardsHandler = useCallback(event => {
+    const target = event.target.closest('.card-container');
+    const index = openCardsArray.indexOf(target);
+    
  
+    if (index === -1) {
+      setOpenCardsArray([...openCardsArray, target])
+    } else {
+      const array = [...openCardsArray];
+      array.splice(index, 1);
+      setOpenCardsArray(array);
+    }
+    
+
+  }, [openCardsArray]);
+  
+  useEffect(() => console.log(openCardsArray), [openCardsArray])
   
   return (
     <div className="game-field">
 
       {
-        gameData.map((object, key) => {
+        gameField.map((object, key) => {
           return (
             <Card
             key={key}
             cardNumber={object.cardNumber}
-            cardImg={object.cardImg} />)
+              cardImg={object.cardImg}
+              cardsHadler={openCardsHandler}
+            />)
         })
       }
     </div>
