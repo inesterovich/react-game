@@ -24,6 +24,10 @@
   max-width: 130px;
 }
 
+.card-container.disabled {
+  pointer-events: none;
+}
+
 .card-container .front {
   perspective: inherit;
   width: 100%;

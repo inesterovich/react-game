@@ -1,23 +1,21 @@
 import React, { useState } from "react";
 
-export const Card = ({ cardNumber, cardImg, cardsHadler }) => {
+export const Card = ({ cardNumber, cardImg, cardsHadler, open }) => {
   
   
-  const [flipped, setFlipped] = useState(false);
-  /* 
+  const [flipped, setFlipped] = useState(open);
 
-  Какие состояния есть у карты? 
-   Перевернутая или нет?
+  // Надо разделить, наверно
 
-  
-  */
-  
-  /* Вот у меня есть поле. По клику карточка переворачивается, вызывается  */
   return (
-    <div className={`card-container ${cardNumber}`} onClick={(event) => {
+    <div className={`card-container ${cardNumber} ${flipped ? 'disabled': ''}`} onClick={(event) => {
+      if (event.isTrusted) {
+        setFlipped(!flipped);
+        cardsHadler(event);
+      } else {
+        setFlipped(!flipped)
+      }
       
-      setFlipped(!flipped);
-      cardsHadler(event);
     }}>
       <div className={`front ${flipped ? 'active' : ''}`}>
         <img src={`${cardImg}`} alt="cardNumber"/>

@@ -18,12 +18,15 @@ export const useGameConfig = () => {
  
   const {generateSet, storage } = utils;
  
-/* Функции из useAuth не вызываются в основном коде. Это - хендлеры событий. 
-  Могу переписать хук, чтобы он сначала смотрел в localStorage, а потом брал. Могу сделать меню. 
+/* 
 
+  Нужен отдельный стейт для состояния игры или сделать меню. 
+
+  Выносим все лишние функции из хука
 */
 
   const startGameHandler = useCallback((min, max, length) => {
+    debugger
     const cardsNames = [
       'two_spades',
       'two_spades',
@@ -92,7 +95,8 @@ export const useGameConfig = () => {
       arr = arr.map(item => {
         return {
           cardNumber: cardsNames[item],
-      cardImg: require(`../assets/deck/${cardsNames[item]}.png`).default
+          cardImg: require(`../assets/deck/${cardsNames[item]}.png`).default,
+          flipped: false,
         }
       })
       return arr;
@@ -115,12 +119,27 @@ export const useGameConfig = () => {
     
   }, [generateSet, storage])
 
+  const updateGameField = useCallback((cardHTML) => {
+    const target = cardHTML.className.split(' ')[1];
+    const copyArray = [...gameField];
+    const updatedArray = copyArray.map((object) => {
+      return {
+        cardNumber: object.cardNumber,
+        cardImg: object.cardImg,
+        flipped: object.cardNumber === target? true: object.flipped
+      }
+    })
 
-
+    storage.set(storageName, {arr: updatedArray})
+  
+  }, [gameField, storage]) 
+  
+  
 
   return {
     gameField,
-    startGameHandler
+    startGameHandler,
+    updateGameField
   }
 
 
