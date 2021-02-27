@@ -1,8 +1,8 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Card } from './Card';
+import { Card } from '../components/Card';
 import { useGameConfig } from '../hooks/useGameConfig';
 
-export const Field = () => {
+export const GamePage = () => {
   const { gameField, startGameHandler, updateGameField } = useGameConfig();
   useEffect(() => startGameHandler(0, 51, 9), [startGameHandler])
   const [openCardsArray, setOpenCardsArray] = useState([]);

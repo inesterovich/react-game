@@ -1,18 +1,36 @@
+:root {
+  --headerHeight: 50px,
+}
+
 .html, body, #root {
   width: 100vw;
   height: 100vh;
 }
-.App {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
+
+h1 {
+  font-size: 1.5rem;
 }
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+.main-header, .main-footer {
+  height: var(--headerHeight)
+}
+
+.main-content {
+  padding: 1rem;
+  height: calc(100% - (var(--headerHeight) * 2))
+}
+
+
 
 .game-field {
   display: grid;
-  grid-template-columns: repeat(6, auto);
+  grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(3, 1fr);
   column-gap: 20px;
   row-gap: 20px;
@@ -21,7 +39,7 @@
 
 .card-container {
   position: relative;
-  max-width: 130px;
+  max-width: 100px;
 }
 
 .card-container.disabled {
@@ -63,4 +81,11 @@
 
 .card-container .back.active {
   transform: rotateY(360deg);
-}
+} 
+
+
+
+/*
+
+
+*/
