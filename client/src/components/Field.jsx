@@ -3,7 +3,6 @@ import { Card } from './Card';
 import { useGameConfig } from '../hooks/useGameConfig';
 
 export const Field = () => {
-  debugger
   const { gameField, startGameHandler, updateGameField } = useGameConfig();
   useEffect(() => startGameHandler(0, 51, 9), [startGameHandler])
   const [openCardsArray, setOpenCardsArray] = useState([]);
@@ -55,6 +54,7 @@ export const Field = () => {
         gameField.map((object, key) => {
           return (
             <Card
+            tabIndex={key}
             key={key}
             cardNumber={object.cardNumber}
               cardImg={object.cardImg}

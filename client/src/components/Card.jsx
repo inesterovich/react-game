@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export const Card = ({ cardNumber, cardImg, cardsHadler, open }) => {
+export const Card = ({ cardNumber, cardImg, cardsHadler, open, tabIndex }) => {
   
   
   const [flipped, setFlipped] = useState(open);
@@ -8,7 +8,18 @@ export const Card = ({ cardNumber, cardImg, cardsHadler, open }) => {
   // Надо разделить, наверно
 
   return (
-    <div className={`card-container ${cardNumber} ${flipped ? 'disabled': ''}`} onClick={(event) => {
+    <div tabIndex={tabIndex} className={`card-container ${cardNumber} ${flipped ? 'disabled' : ''}`}
+      onKeyDown={(event) => {
+
+        if (event.key === "Enter") {
+      
+            setFlipped(!flipped);
+            cardsHadler(event);
+         
+        }
+      }}
+      
+      onClick={(event) => {
       if (event.isTrusted) {
         setFlipped(!flipped);
         cardsHadler(event);

@@ -26,7 +26,6 @@ export const useGameConfig = () => {
 */
 
   const startGameHandler = useCallback((min, max, length) => {
-    debugger
     const cardsNames = [
       'two_spades',
       'two_spades',
