@@ -10,20 +10,16 @@ import { utils } from '../utils';
 3. Доставать оттуда, если оно там есть. 
 */
 
+
 const storageName = 'gameData'
 
 export const useGameConfig = () => {
   const [gameField, setGameField] = useState([]);
+  const [gameStatus, setGameStatus] = useState(false);
   const [ready, setReady] = useState(false);
+  const [flipped, setFlipped] = useState([])
  
   const {generateSet, storage } = utils;
- 
-/* 
-
-  Нужен отдельный стейт для состояния игры или сделать меню. 
-
-  Выносим все лишние функции из хука
-*/
 
   const startGameHandler = useCallback((min, max, length) => {
     const cardsNames = [
@@ -102,16 +98,37 @@ export const useGameConfig = () => {
     }
 
     const data = storage.get(storageName);
-    if (data && data.arr) {
-      setGameField(data.arr)
-    } else {
-      const arr = generateGameArray(min, max, length);
-      const gameData = {
-        arr
+  
+    
+    if (data) {
+
+      if (data.gameField) {
+        setGameField(data.gameField)
+      } else {
+        data.gameField = generateGameArray(0, 51, data.fieldSize / 2)
+        setGameField(data.gameField);
+        storage.set(storageName, data)
       }
-      setGameField(arr);
+
+
+    } else {
+      const gameData = {
+        fieldSize: 8,
+        timerToogler: false,
+        gameTime: null,
+        soundToogler: true,
+        soundVolume: 1.0,
+        musicToogler: true,
+        musicVolume: 1.0,
+      }
+
+      gameData.gameField = generateGameArray(0, 51, gameData.fieldSize /2 )
+
+      setGameField(gameData.gameField)
       storage.set(storageName, gameData);
+      
     }
+    
 
 
 
@@ -123,32 +140,40 @@ export const useGameConfig = () => {
     const copyArray = [...gameField];
     const updatedArray = copyArray.map((object) => {
       return {
-        cardNumber: object.cardNumber,
-        cardImg: object.cardImg,
-        flipped: object.cardNumber === target? true: object.flipped
+        ...object,
+        flipped: object.cardNumber === target ? true : object.flipped
       }
     })
 
-    storage.set(storageName, {arr: updatedArray})
-  
-  }, [gameField, storage]) 
+    const gameData = storage.get(storageName)
+
+    storage.set(storageName, {
+      ...gameData,
+      gameField: updatedArray
+    })
+   
+    const cardsHTML = document.querySelectorAll('.card-container');
+   const result = Array.from(cardsHTML).every((cardHTML) => cardHTML.classList.contains('disabled'));
+    if (result) {
+      alert('You won!')
+    }
+
+  }, [gameField, storage]);
+
+ 
+ 
+
   
   
 
   return {
     gameField,
     startGameHandler,
-    updateGameField
+    updateGameField,
+     
   }
 
 
-  /* 
-  Что должен уметь этот хук? 
-  1. Создавать первичное состояние поля;
-  2. Сохранять состояние игры;
-  3. Очищать состояние игры. 
 
-  Похоже, весьма похоже на useAuth
-  */
 
 }

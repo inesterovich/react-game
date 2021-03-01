@@ -4,11 +4,10 @@ import { useGameConfig } from '../hooks/useGameConfig';
 
 export const GamePage = () => {
   const { gameField, startGameHandler, updateGameField } = useGameConfig();
+  
+  
   useEffect(() => startGameHandler(0, 51, 9), [startGameHandler])
   const [openCardsArray, setOpenCardsArray] = useState([]);
-
-  //Спустить openCardsArray вниз ?
-  // Можно просто добавлять в новое свойство и сравнивать длину
   
   const openCardsHandler = useCallback(event => {
     const target = event.target.closest('.card-container');
@@ -29,7 +28,7 @@ export const GamePage = () => {
 
   }, [openCardsArray]);
 
-  
+
   useEffect(
     () => {
       if (openCardsArray.length === 2) {
@@ -40,12 +39,21 @@ export const GamePage = () => {
           setTimeout(() => {openCardsArray[0].click() }, 1000);
           setTimeout(() => { openCardsArray[1].click() }, 1200);
         } else {
-          updateGameField(openCardsArray[0])
+          updateGameField(openCardsArray[0]);
+
+        
+
         }
 
         setOpenCardsArray([])
       }
-    }, [gameField, openCardsArray, updateGameField])
+    }, [ gameField, openCardsArray, updateGameField])
+
+  
+  
+  
+  
+  
   
   return (
     <div className="game-field">
