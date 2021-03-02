@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
+
 export const Card = ({ cardNumber, cardImg, cardsHadler, open, tabIndex }) => {
   
   
   const [flipped, setFlipped] = useState(open);
 
-  // Надо разделить, наверно
 
   return (
     <div tabIndex={tabIndex} className={`card-container ${cardNumber} ${flipped ? 'disabled' : ''}`}

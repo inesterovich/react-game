@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect } from 'react';
 import { utils } from '../utils';
 
+
 /* 
 Что должен делать этот хук? 
 Он должен:
@@ -15,11 +16,7 @@ const storageName = 'gameData'
 
 export const useGameConfig = () => {
   const [gameField, setGameField] = useState([]);
-  const [gameStatus, setGameStatus] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [flipped, setFlipped] = useState([])
- 
-  const {generateSet, storage } = utils;
+  const { generateSet, storage } = utils;
 
   const startGameHandler = useCallback((min, max, length) => {
     const cardsNames = [
