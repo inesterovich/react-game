@@ -1,24 +1,15 @@
 import { useState, useCallback, useEffect } from 'react';
 import { utils } from '../utils';
 
-
-/* 
-Что должен делать этот хук? 
-Он должен:
-
-1. Генерировать состояние игрового поля;
-2. Сохранять его в localStorage;
-3. Доставать оттуда, если оно там есть. 
-*/
-
-
 const storageName = 'gameData'
 
 export const useGameConfig = () => {
   const [gameField, setGameField] = useState([]);
   const { generateSet, storage } = utils;
 
-  const startGameHandler = useCallback((min, max, length) => {
+  const generateGameArray = 
+    useCallback((min, max, length) => {
+
     const cardsNames = [
       'two_spades',
       'two_spades',
@@ -73,30 +64,30 @@ export const useGameConfig = () => {
       'queen_diamonds',
       'king_diamonds',
     ]
-    const generateGameArray = (min, max, length) => {
-      let arr = Array.from(generateSet(min, max, length));
-      arr = arr.concat(arr);
-      var j, temp;
-      for(var i = arr.length - 1; i > 0; i--){
-        j = Math.floor(Math.random()*(i + 1));
-        temp = arr[j];
-        arr[j] = arr[i];
-        arr[i] = temp;
-      }
-  
-      arr = arr.map(item => {
-        return {
-          cardNumber: cardsNames[item],
-          cardImg: require(`../assets/deck/${cardsNames[item]}.png`).default,
-          flipped: false,
-        }
-      })
-      return arr;
+    let arr = Array.from(generateSet(min, max, length));
+    arr = arr.concat(arr);
+    var j, temp;
+    for(var i = arr.length - 1; i > 0; i--){
+      j = Math.floor(Math.random()*(i + 1));
+      temp = arr[j];
+      arr[j] = arr[i];
+      arr[i] = temp;
     }
 
+    arr = arr.map(item => {
+      return {
+        cardNumber: cardsNames[item],
+        cardImg: require(`../assets/deck/${cardsNames[item]}.png`).default,
+        flipped: false,
+      }
+    })
+    return arr;
+  }, [generateSet])
+
+  const startGameHandler = useCallback((min, max, length) => {
+   
     const data = storage.get(storageName);
   
-    
     if (data) {
 
       if (data.gameField) {
@@ -111,8 +102,8 @@ export const useGameConfig = () => {
     } else {
       const gameData = {
         fieldSize: 8,
-        timerToogler: false,
-        gameTime: null,
+        gameLevel: 4,
+        gameActions: 32,
         soundToogler: true,
         soundVolume: 1.0,
         musicToogler: true,
@@ -126,11 +117,17 @@ export const useGameConfig = () => {
       
     }
     
+  }, [generateGameArray, storage])
+
+  const resetGameHandler = useCallback(() => {
+    const data = storage.get('gameData');
+    delete data.gameField;
+    data.gameActions = data.fieldSize * data.gameLevel;
+    storage.set(storageName, data);
+    window.location.reload()
 
 
-
-    
-  }, [generateSet, storage])
+  }, [storage])
 
   const updateGameField = useCallback((cardHTML) => {
     const target = cardHTML.className.split(' ')[1];
@@ -149,11 +146,6 @@ export const useGameConfig = () => {
       gameField: updatedArray
     })
    
-    const cardsHTML = document.querySelectorAll('.card-container');
-   const result = Array.from(cardsHTML).every((cardHTML) => cardHTML.classList.contains('disabled'));
-    if (result) {
-      alert('You won!')
-    }
 
   }, [gameField, storage]);
 
@@ -167,6 +159,7 @@ export const useGameConfig = () => {
     gameField,
     startGameHandler,
     updateGameField,
+    resetGameHandler
      
   }
 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { utils } from '../utils';
+
 const storageName = 'gameData';
 
 export const SettingsPage = () => {
@@ -8,8 +9,8 @@ export const SettingsPage = () => {
   // То есть по факту, игра создаваться будет здесь? 
   const [settingsForm, setSettingsForm] = useState({
     fieldSize: 8,
-    timerToogler: false,
-    gameTime: null,
+    gameLevel: 4,
+    gameActions: 32,
     soundToogler: true,
     soundVolume: 1.0,
     musicToogler: true,
@@ -19,11 +20,14 @@ export const SettingsPage = () => {
 
   const changeHandler = (event) => {
 
+    console.log(event.target.type, event.target.value);
+
     setSettingsForm({
       ...settingsForm,
       [event.target.name]: 
         event.target.type === "checkbox" ? !settingsForm[event.target.name] :
-        event.target.type === "radio" ? Number(event.target.value) :
+          event.target.type === "radio" || event.target.type === "select-one"
+            ? Number(event.target.value) :
           event.target.value
     
     })
@@ -39,12 +43,23 @@ export const SettingsPage = () => {
 
   const submitHandler = (event) => {
     event.preventDefault();
-    const currentData = storage.get(storageName);
-    if (currentData.fieldSize && ( currentData.fieldSize !== settingsForm.fieldSize)) {
+    const prevData = storage.get(storageName);
+    if (prevData) {
+      let currentData = settingsForm;
+      if (prevData.fieldSize !== currentData.fieldSize) {
+        
+        delete currentData.gameField;
+      }
 
-      const data = settingsForm;
-      delete data.gameField
-      storage.set(storageName, data);
+      if ( prevData.fieldSize !== currentData.fieldSize ||
+        prevData.gameLevel !== currentData.gameLevel) {
+        currentData.gameActions = currentData.fieldSize * currentData.gameLevel
+      }
+
+
+
+      
+      storage.set(storageName, currentData);
     } else {
       storage.set(storageName, settingsForm);
     }
@@ -101,32 +116,16 @@ export const SettingsPage = () => {
         </div>
         
         <div className="timerSetings">
-          <p>Таймер</p>
-          <div>
-            <label htmlFor="timerToogler"> Вкл/Выкл</label>
-            <input
-              id="timerToogler"
-              name="timerToogler"
-              type="checkbox"
-              onChange={changeHandler}
-             checked={settingsForm.timerToogler}
-            />
-          </div>
-
-          {
-
-
-            settingsForm.timerToogler &&
-            
+      
             <div>
-            <p>Продолжительность партии</p>
-            <select name="gameTime" id="gameTime" onChange={changeHandler} defaultValue={settingsForm.gameTime}>
-              <option value="60">60 сек</option>
-              <option value="120">120 сек</option>
-              <option value="180">180 сек</option>
+            <p>Уровень сложности</p>
+            <select name="gameLevel" id="gameLevel" onChange={changeHandler} value={settingsForm.gameLevel}>
+              <option value="4">Легкий</option>
+              <option value="3">Средний</option>
+              <option value="2">Сложный</option>
             </select>
           </div> 
-          }
+          
 
         
 

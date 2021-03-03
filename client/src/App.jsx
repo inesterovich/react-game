@@ -28,6 +28,8 @@ function App() {
             text1="Полноэкранный режим"
             text2="Выйти из полноэкранного режима"
             clickHandler={fullScreenHandler} />
+          
+          
         </header>
         <main className="main-content">
           <div className="wrapper">
