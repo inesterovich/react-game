@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 import { utils } from '../utils';
 
 const storageName = 'gameData'
@@ -84,7 +84,7 @@ export const useGameConfig = () => {
     return arr;
   }, [generateSet])
 
-  const startGameHandler = useCallback((min, max, length) => {
+  const startGameHandler = useCallback(() => {
    
     const data = storage.get(storageName);
   

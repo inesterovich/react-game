@@ -11,22 +11,22 @@ export const SettingsPage = () => {
     fieldSize: 8,
     gameLevel: 4,
     gameActions: 32,
+    cardsColor: 'blue',
     soundToogler: true,
     soundVolume: 1.0,
-    musicToogler: true,
-    musicVolume: 1.0
+    
   })
 
 
   const changeHandler = (event) => {
 
-    console.log(event.target.type, event.target.value);
+    console.log(event.target.name);
 
     setSettingsForm({
       ...settingsForm,
       [event.target.name]: 
         event.target.type === "checkbox" ? !settingsForm[event.target.name] :
-          event.target.type === "radio" || event.target.type === "select-one"
+          event.target.name === "fieldSize" || event.target.type === "select-one"
             ? Number(event.target.value) :
           event.target.value
     
@@ -115,7 +115,7 @@ export const SettingsPage = () => {
 
         </div>
         
-        <div className="timerSetings">
+        <div className="gameDifficulty">
       
             <div>
             <p>Уровень сложности</p>
@@ -131,6 +131,22 @@ export const SettingsPage = () => {
 
         </div>
 
+        <div className="cardsColorGroup">
+          <p>Выберите цвет рубашки карточек</p>
+          <div>
+            <label htmlFor="blueColor"> Голубой</label>
+            <input id="blueColor" type="radio" value="blue" name="cardsColor"
+              onChange={changeHandler} checked={settingsForm.cardsColor === 'blue' }/>
+          </div>
+
+          <div>
+            <label htmlFor="pinkColor"> Розовый</label>
+            <input id="pinkColor" type="radio" value="pink" name="cardsColor"
+              onChange={changeHandler} checked={settingsForm.cardsColor === 'pink'}
+            />
+          </div>
+
+        </div>
       </fieldset>
       
       <fieldset>

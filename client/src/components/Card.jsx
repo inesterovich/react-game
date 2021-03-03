@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { utils } from '../utils';
 
 
 export const Card = ({ cardNumber, cardImg, cardsHadler, open, tabIndex }) => {
-  
-  
-  const [flipped, setFlipped] = useState(open);
 
+  const [flipped, setFlipped] = useState(open);
+  const [cardsColor, setCardsColor] = useState('blue');
+  const { storage } = utils;
+
+  useEffect(() => {
+    const data = storage.get('gameData');
+    if (data && data.cardsColor) {
+      setCardsColor(data.cardsColor)
+    }
+  }, [storage])
 
   return (
     <div tabIndex={tabIndex} className={`card-container ${cardNumber} ${flipped ? 'disabled' : ''}`}
@@ -31,7 +39,10 @@ export const Card = ({ cardNumber, cardImg, cardsHadler, open, tabIndex }) => {
       <div className={`front ${flipped ? 'active' : ''}`}>
         <img src={`${cardImg}`} alt="cardNumber"/>
       </div>
-      <div className={`back ${!flipped? 'active' : ''}`}></div>
+      <div
+        className={`back ${!flipped ? 'active' : ''}`}
+        style={{backgroundColor: cardsColor}}
+      ></div>
     </div>
   )
 }

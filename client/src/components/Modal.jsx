@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 
 
-export const Modal = ({message, isModalOpen, modalHandler, audioObject}) => {
+export const Modal = ({message, isModalOpen, modalHandler}) => {
  
 
   return (
