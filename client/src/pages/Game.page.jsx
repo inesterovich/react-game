@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { Card } from '../components/Card';
 import { useGameConfig } from '../hooks/useGameConfig';
 import { utils } from '../utils'; 
@@ -186,6 +187,7 @@ export const GamePage = () => {
   
   return (
     <>
+      <Link to="/" className="back-button" >В меню </Link>
       <Modal
         message={modalMessage}
         isModalOpen={isModalOpen}
@@ -198,6 +200,7 @@ export const GamePage = () => {
                               text1="Полноэкранный режим"
                               text2="Выйти из полноэкранного режима"
           clickHandler={fullScreenHandler} />
+        <button type="button" onClick={resetGameHandler}>Начать сначала</button>
         
 
                            

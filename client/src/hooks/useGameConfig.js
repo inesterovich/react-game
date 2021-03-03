@@ -104,10 +104,10 @@ export const useGameConfig = () => {
         fieldSize: 8,
         gameLevel: 4,
         gameActions: 32,
+        cardsColor: 'blue',
         soundToogler: true,
         soundVolume: 1.0,
-        musicToogler: true,
-        musicVolume: 1.0,
+        
       }
 
       gameData.gameField = generateGameArray(0, 51, gameData.fieldSize /2 )

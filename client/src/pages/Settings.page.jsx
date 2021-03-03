@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 import { utils } from '../utils';
 
 const storageName = 'gameData';
@@ -15,7 +16,9 @@ export const SettingsPage = () => {
     soundToogler: true,
     soundVolume: 1.0,
     
-  })
+  });
+
+  const history = useHistory();
 
 
   const changeHandler = (event) => {
@@ -56,22 +59,22 @@ export const SettingsPage = () => {
         currentData.gameActions = currentData.fieldSize * currentData.gameLevel
       }
 
-
-
-      
       storage.set(storageName, currentData);
     } else {
       storage.set(storageName, settingsForm);
     }
+
+    history.push('/game');
     
   }
 
 
 
   return (
-  
+    <>
+      <Link to="/" className="back-button" >В меню </Link>
       <form id="settings" onSubmit={submitHandler}>
-        <h2>Настройки</h2>
+        <h2 style={{textAlign:"right"}}>Настройки</h2>
         <fieldset>
           <legend>Игра</legend>
         <div className="fieldsizeSettings">
@@ -220,6 +223,6 @@ export const SettingsPage = () => {
       </fieldset>
       <button form="settings" type="submit">Сохранить</button>
      </form>
-    
+    </>
   )
 }
