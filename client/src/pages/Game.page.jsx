@@ -6,6 +6,7 @@ import clickSRC from "../assets/audio/click.wav";
 import { Modal } from '../components/Modal';
 import succesGameSrc from '../assets/audio/success_game.wav';
 import failedGameSrc from '../assets/audio/failed_game.mp3';
+import { CustomButton } from '../components/Button';
 
 export const GamePage = () => {
   const { gameField, startGameHandler, updateGameField, resetGameHandler } = useGameConfig();
@@ -23,6 +24,17 @@ export const GamePage = () => {
       setActions(data.gameActions)
     }
   }, [storage]);
+
+  const fullScreenHandler = (event) => {
+    const root = document.getElementById('root');
+
+    if (document.fullscreenElement === root) {
+      document.exitFullscreen()
+    } else {
+      root.requestFullscreen()
+    }
+    
+  }
 
 
   const [openCardsArray, setOpenCardsArray] = useState([]);
@@ -174,13 +186,23 @@ export const GamePage = () => {
   
   return (
     <>
-            <Modal
-          message={modalMessage}
-          isModalOpen={isModalOpen}
-          modalHandler={modalHandler}
-          
-        />
-      <div className="gameActions">{ actions }</div>
+      <Modal
+        message={modalMessage}
+        isModalOpen={isModalOpen}
+        modalHandler={modalHandler}
+                            
+          />
+                <div className="gameStats">
+                  <CustomButton
+                              name="fullscreen"
+                              text1="Полноэкранный режим"
+                              text2="Выйти из полноэкранного режима"
+          clickHandler={fullScreenHandler} />
+        
+
+                           
+                        <p className="gameActions"> Осталось { actions } ходов</p>
+                </div>
       
       <div className="game-field">  
   
