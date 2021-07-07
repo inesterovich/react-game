@@ -1,38 +1,228 @@
+:root {
+  --headerHeight: 50px,
+}
+
+
+.html, body, #root {
+  width: 100vw;
+  height: 100vh;
+}
+
+
+h1 {
+  font-size: 1rem;
+}
 .App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
+}
+
+.main-header, .main-footer {
+  height: var(--headerHeight)
+}
+
+.main-content {
+  position: relative;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  height: calc(100% - (var(--headerHeight) * 2));
+  min-width: 750px;
+  background-image: url('./assets/img/background.jpg');
 }
 
-.App-link {
-  color: #61dafb;
+.main-content .wrapper {
+
+  width: 95%;
+  height: 95%;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+ 
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.main-content form {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content fieldset {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  
+ 
+  
+}
+
+
+.main-nav ul {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  list-style: none ;
+  row-gap: 1.5rem;
+}
+
+.main-nav a {
+  display: block;
+  border: 1px solid black;
+  text-align: center;
+  padding: 0.2rem;
+  font-size: 2rem;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  text-decoration: none;
+  color: black;
+  transition: 0.5s;
+}
+
+.main-nav a:hover {
+  background-color: rgba(255, 255, 255, 0.75);
+}
+
+
+.game-field {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+ 
+  column-gap: 20px;
+  row-gap: 10px;
+  
+}
+
+.card-container {
+  position: relative;
+  max-width: 100px;
+}
+
+.card-container.disabled {
+  pointer-events: none;
+}
+
+.card-container .front {
+  perspective: inherit;
+  width: 100%;
+  height: 100%;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  transition: 0.5s;
+  border: 1px solid black;
+}
+
+.card-container .front img {
+  
+  width: 100%;
+  height: 100%;
+}
+
+.card-container .front.active {
+  transform: rotateY(0);
+}
+
+.card-container .back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: blue;
+  transition: 0.5s;
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
+  border: 1px solid black;
+}
+
+.card-container .back.active {
+  transform: rotateY(360deg);
+} 
+
+.back-button {
+  display: block;
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  color: black;
+  text-decoration: none;
+  border: 1px solid black;
+  background-color:rgba(255, 255, 255, 0.65);
+  padding: 0.5rem;
+}
+
+.back-button:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+
+.modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(0);
+  transition: 0.5s;
+}
+
+.modal_active {
+  transform: scale(1);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.55);
+  z-index: 200;
+}
+
+.modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+
+  padding: 2rem;
+  background-color: #fff;
+}
+
+
+@media (max-width: 1023px) {
+
+  .main-content {
+    max-width: 600px;
+    min-width: none;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media (max-width: 767px) {
+  .main-content {
+    max-width: 300px;
+    height: auto;
+    display: flex;
+    min-width: 85%;
+    padding: 1rem;
+  }
+
+  .main-content .wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  .main-content .game-field {
+    grid-template-columns: repeat(5, 1fr);
+    padding: 2rem;
+  }
+
+  .main-content .card-container {
+    max-width: 80px;
   }
 }
